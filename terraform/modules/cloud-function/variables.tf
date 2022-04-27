@@ -104,7 +104,7 @@ variable "project_id" {
 variable "region" {
   description = "Region used for all resources."
   type        = string
-  default     = "europe-west1"
+  default     = "asia-southeast2"
 }
 
 variable "service_account" {

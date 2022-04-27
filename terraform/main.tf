@@ -60,7 +60,7 @@ module "test-vm" {
     addresses  = null
     nat        = false
     network    = module.vpc-hub.self_link
-    subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-onprem"]
+    subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-hub"]
   }]
   tags = ["ssh"]
 }

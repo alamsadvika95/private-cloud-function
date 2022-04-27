@@ -136,7 +136,7 @@ resource "google_compute_instance" "default" {
   can_ip_forward            = var.can_ip_forward
   allow_stopping_for_update = var.options.allow_stopping_for_update
   deletion_protection       = var.options.deletion_protection
-  enable_display            = var.enable_display
+  enable_display            = var.enable_display 
   labels                    = var.labels
   metadata                  = var.metadata
 
