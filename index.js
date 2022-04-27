@@ -1,6 +1,7 @@
 const functions = require('@google-cloud/functions-framework');
 const escapeHtml = require('escape-html');
 const mysql = require('mysql2');
+const redis = require('redis');
 
 functions.http('helloHttp', (req, res) => {
   const pool = mysql.createPool({
