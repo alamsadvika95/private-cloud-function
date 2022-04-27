@@ -22,13 +22,13 @@ locals {
 }
 
 module "firewall-onprem" {
-  source     = "../../../modules/net-vpc-firewall"
+  source     = "./modules/net-vpc-firewall"
   project_id = var.project_id
   network    = module.vpc-onprem.name
 }
 
 module "vpc-hub" {
-  source     = "../../../modules/net-vpc"
+  source     = "./modules/net-vpc"
   project_id = var.project_id
   name       = "${var.name}-hub"
   subnets = [
@@ -46,7 +46,7 @@ module "vpc-hub" {
 # ###############################################################################
 
 module "test-vm" {
-  source        = "../../../modules/compute-vm"
+  source        = "./modules/compute-vm"
   project_id    = var.project_id
   zone          = "${var.region}-b"
   name          = "${var.name}-test"
@@ -70,7 +70,7 @@ module "test-vm" {
 # ###############################################################################
 
 module "function-hello" {
-  source           = "../../../modules/cloud-function"
+  source           = "./modules/cloud-function"
   project_id       = var.project_id
   name             = var.name
   bucket_name      = "${var.name}-tf-cf-deploy"
@@ -94,7 +94,7 @@ module "function-hello" {
 # ###############################################################################
 
 module "private-dns-onprem" {
-  source          = "../../../modules/dns"
+  source          = "./modules/dns"
   project_id      = var.project_id
   type            = "private"
   name            = var.name
@@ -110,7 +110,7 @@ module "private-dns-onprem" {
 # ###############################################################################
 
 module "addresses" {
-  source     = "../../../modules/net-address"
+  source     = "./modules/net-address"
   project_id = var.project_id
   psc_addresses = {
     (local.psc_name) = {
