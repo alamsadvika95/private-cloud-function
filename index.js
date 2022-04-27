@@ -28,7 +28,6 @@ functions.http('helloHttp', (req, res) => {
       
       pool.query(`INSERT INTO product (name, description, image) VALUES ("${name}", "${description}", "${image}")`, function ( error, results ) {
         console.log(error);
-        console.log(results);
         res.status(200).send(results);
       });
       break;
