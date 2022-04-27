@@ -1,0 +1,9 @@
+{
+  "name": "sample-http",
+  "version": "0.0.1",
+  "dependencies": {
+    "mysql2": "^2.3.3",
+    "@google-cloud/functions-framework": "^3.0.0",
+    "escape-html": "^1.0.3"
+  }
+}
