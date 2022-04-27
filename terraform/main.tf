@@ -24,7 +24,7 @@ locals {
 module "firewall-onprem" {
   source     = "./modules/net-vpc-firewall"
   project_id = var.project_id
-  network    = module.vpc-onprem.name
+  network    = module.vpc-hub.name
 }
 
 module "vpc-hub" {
@@ -93,13 +93,13 @@ module "function-hello" {
 # #                                  DNS                                        #
 # ###############################################################################
 
-module "private-dns-onprem" {
+module "private-dns-hub" {
   source          = "./modules/dns"
   project_id      = var.project_id
   type            = "private"
   name            = var.name
   domain          = "${var.region}-${var.project_id}.cloudfunctions.net."
-  client_networks = [module.vpc-onprem.self_link]
+  client_networks = [module.vpc-hub.self_link]
   recordsets = {
     "A " = { ttl = 300, records = [module.addresses.psc_addresses[local.psc_name].address] }
   }
