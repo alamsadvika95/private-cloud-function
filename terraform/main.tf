@@ -65,29 +65,29 @@ module "test-vm" {
   tags = ["ssh"]
 }
 
-# # ###############################################################################
-# # #                              Cloud Function                                 #
-# # ###############################################################################
+# ###############################################################################
+# #                              Cloud Function                                 #
+# ###############################################################################
 
-# module "function-hello" {
-#   source           = "./modules/cloud-function"
-#   project_id       = var.project_id
-#   name             = var.name
-#   bucket_name      = "${var.name}-tf-cf-deploy"
-#   ingress_settings = "ALLOW_INTERNAL_ONLY"
-#   bundle_config = {
-#     source_dir  = "${path.module}/assets"
-#     output_path = "bundle.zip"
-#     excludes    = null
-#   }
-#   bucket_config = {
-#     location             = var.region
-#     lifecycle_delete_age = null
-#   }
-#   iam = {
-#     "roles/cloudfunctions.invoker" = ["226429748228-compute@developer.gserviceaccount.com"]
-#   }
-# }
+module "function-hello" {
+  source           = "./modules/cloud-function"
+  project_id       = var.project_id
+  name             = var.name
+  bucket_name      = "${var.name}-tf-cf-deploy"
+  ingress_settings = "ALLOW_INTERNAL_ONLY"
+  bundle_config = {
+    source_dir  = "${path.module}/assets"
+    output_path = "bundle.zip"
+    excludes    = null
+  }
+  bucket_config = {
+    location             = var.region
+    lifecycle_delete_age = null
+  }
+  iam = {
+    "roles/cloudfunctions.invoker" = ["226429748228-compute@developer.gserviceaccount.com"]
+  }
+}
 
 # # ###############################################################################
 # # #                                  DNS                                        #
