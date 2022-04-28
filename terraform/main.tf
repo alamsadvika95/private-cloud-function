@@ -41,29 +41,29 @@ module "vpc-hub" {
   ]
 }
 
-# ###############################################################################
-# #                                  VMs                                        #
-# ###############################################################################
+###############################################################################
+#                                  VMs                                        #
+###############################################################################
 
-# module "test-vm" {
-#   source        = "./modules/compute-vm"
-#   project_id    = var.project_id
-#   zone          = "${var.region}-b"
-#   name          = "${var.name}-test"
-#   instance_type = "e2-micro"
-#   boot_disk = {
-#     image = "debian-cloud/debian-9"
-#     type  = "pd-balanced"
-#     size  = 10
-#   }
-#   network_interfaces = [{
-#     addresses  = null
-#     nat        = false
-#     network    = module.vpc-hub.self_link
-#     subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-hub"]
-#   }]
-#   tags = ["ssh"]
-# }
+module "test-vm" {
+  source        = "./modules/compute-vm"
+  project_id    = var.project_id
+  zone          = "${var.region}-b"
+  name          = "${var.name}-test"
+  instance_type = "e2-micro"
+  boot_disk = {
+    image = "debian-cloud/debian-9"
+    type  = "pd-balanced"
+    size  = 10
+  }
+  network_interfaces = [{
+    addresses  = null
+    nat        = false
+    network    = module.vpc-hub.self_link
+    subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-hub"]
+  }]
+  tags = ["ssh"]
+}
 
 # # ###############################################################################
 # # #                              Cloud Function                                 #
