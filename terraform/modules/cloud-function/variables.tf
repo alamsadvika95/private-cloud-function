@@ -59,10 +59,10 @@ variable "function_config" {
     timeout     = number
   })
   default = {
-    entry_point = "main"
+    entry_point = "helloHttp"
     instances   = 1
-    memory      = 256
-    runtime     = "python37"
+    memory      = 128
+    runtime     = "nodejs16"
     timeout     = 180
   }
 }

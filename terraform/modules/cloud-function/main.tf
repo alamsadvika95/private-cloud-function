@@ -56,7 +56,7 @@ resource "google_vpc_access_connector" "connector" {
 
 resource "google_cloudfunctions_function" "function" {
   project               = var.project_id
-  region                = var.region
+  region                = var.region 
   name                  = "${local.prefix}${var.name}"
   description           = var.description
   runtime               = var.function_config.runtime

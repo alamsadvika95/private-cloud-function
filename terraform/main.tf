@@ -45,87 +45,87 @@ module "vpc-hub" {
 # #                                  VMs                                        #
 # ###############################################################################
 
-module "test-vm" {
-  source        = "./modules/compute-vm"
-  project_id    = var.project_id
-  zone          = "${var.region}-b"
-  name          = "${var.name}-test"
-  instance_type = "e2-micro"
-  boot_disk = {
-    image = "debian-cloud/debian-9"
-    type  = "pd-balanced"
-    size  = 10
-  }
-  network_interfaces = [{
-    addresses  = null
-    nat        = false
-    network    = module.vpc-hub.self_link
-    subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-hub"]
-  }]
-  tags = ["ssh"]
-}
+# module "test-vm" {
+#   source        = "./modules/compute-vm"
+#   project_id    = var.project_id
+#   zone          = "${var.region}-b"
+#   name          = "${var.name}-test"
+#   instance_type = "e2-micro"
+#   boot_disk = {
+#     image = "debian-cloud/debian-9"
+#     type  = "pd-balanced"
+#     size  = 10
+#   }
+#   network_interfaces = [{
+#     addresses  = null
+#     nat        = false
+#     network    = module.vpc-hub.self_link
+#     subnetwork = module.vpc-hub.subnet_self_links["${var.region}/${var.name}-hub"]
+#   }]
+#   tags = ["ssh"]
+# }
 
-# ###############################################################################
-# #                              Cloud Function                                 #
-# ###############################################################################
+# # ###############################################################################
+# # #                              Cloud Function                                 #
+# # ###############################################################################
 
-module "function-hello" {
-  source           = "./modules/cloud-function"
-  project_id       = var.project_id
-  name             = var.name
-  bucket_name      = "${var.name}-tf-cf-deploy"
-  ingress_settings = "ALLOW_INTERNAL_ONLY"
-  bundle_config = {
-    source_dir  = "${path.module}/assets"
-    output_path = "bundle.zip"
-    excludes    = null
-  }
-  bucket_config = {
-    location             = var.region
-    lifecycle_delete_age = null
-  }
-  iam = {
-    "roles/cloudfunctions.invoker" = ["allUsers"]
-  }
-}
+# module "function-hello" {
+#   source           = "./modules/cloud-function"
+#   project_id       = var.project_id
+#   name             = var.name
+#   bucket_name      = "${var.name}-tf-cf-deploy"
+#   ingress_settings = "ALLOW_INTERNAL_ONLY"
+#   bundle_config = {
+#     source_dir  = "${path.module}/assets"
+#     output_path = "bundle.zip"
+#     excludes    = null
+#   }
+#   bucket_config = {
+#     location             = var.region
+#     lifecycle_delete_age = null
+#   }
+#   iam = {
+#     "roles/cloudfunctions.invoker" = ["226429748228-compute@developer.gserviceaccount.com"]
+#   }
+# }
 
-# ###############################################################################
-# #                                  DNS                                        #
-# ###############################################################################
+# # ###############################################################################
+# # #                                  DNS                                        #
+# # ###############################################################################
 
-module "private-dns-hub" {
-  source          = "./modules/dns"
-  project_id      = var.project_id
-  type            = "private"
-  name            = var.name
-  domain          = "${var.region}-${var.project_id}.cloudfunctions.net."
-  client_networks = [module.vpc-hub.self_link]
-  recordsets = {
-    "A " = { ttl = 300, records = [module.addresses.psc_addresses[local.psc_name].address] }
-  }
-}
+# module "private-dns-hub" {
+#   source          = "./modules/dns"
+#   project_id      = var.project_id
+#   type            = "private"
+#   name            = var.name
+#   domain          = "${var.region}-${var.project_id}.cloudfunctions.net."
+#   client_networks = [module.vpc-hub.self_link]
+#   recordsets = {
+#     "A " = { ttl = 300, records = [module.addresses.psc_addresses[local.psc_name].address] }
+#   }
+# }
 
-# ###############################################################################
-# #                                  PSCs                                       #
-# ###############################################################################
+# # ###############################################################################
+# # #                                  PSCs                                       #
+# # ###############################################################################
 
-module "addresses" {
-  source     = "./modules/net-address"
-  project_id = var.project_id
-  psc_addresses = {
-    (local.psc_name) = {
-      address = var.psc_endpoint
-      network = module.vpc-hub.self_link
-    }
-  }
-}
+# module "addresses" {
+#   source     = "./modules/net-address"
+#   project_id = var.project_id
+#   psc_addresses = {
+#     (local.psc_name) = {
+#       address = var.psc_endpoint
+#       network = module.vpc-hub.self_link
+#     }
+#   }
+# }
 
-resource "google_compute_global_forwarding_rule" "psc-endpoint" {
-  provider              = google-beta
-  project               = var.project_id
-  name                  = local.psc_name
-  network               = module.vpc-hub.self_link
-  ip_address            = module.addresses.psc_addresses[local.psc_name].self_link
-  target                = "vpc-sc"
-  load_balancing_scheme = ""
-}
+# resource "google_compute_global_forwarding_rule" "psc-endpoint" {
+#   provider              = google-beta
+#   project               = var.project_id
+#   name                  = local.psc_name
+#   network               = module.vpc-hub.self_link
+#   ip_address            = module.addresses.psc_addresses[local.psc_name].self_link
+#   target                = "vpc-sc"
+#   load_balancing_scheme = ""
+# }
